@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LexReview — Onboarding Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060912;--bg2:#0A0F1E;--surface:#0F1629;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);
+  --blue:#3B82F6;--blue2:#60A5FA;
+  --green:#22C55E;--green2:#4ADE80;
+  --amber:#F59E0B;
+  --text:#F0F6FF;--muted:#6B7A99;--muted2:#8A9ABF;
+  --error:#EF4444;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0}
+
+/* PROGRESS */
+.progress-bar{height:3px;background:var(--border);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));transition:width .4s ease}
+
+/* HEADER */
+.header{padding:32px 40px 0;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:18px;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.01em}
+.logo .dot{color:var(--blue)}
+.step-indicator{font-size:12px;color:var(--muted);font-weight:500}
+
+/* CONTAINER */
+.form-wrap{max-width:600px;margin:0 auto;padding:48px 24px 80px}
+
+/* INTRO */
+.intro{text-align:center;margin-bottom:52px}
+.intro-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);padding:6px 18px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue2);margin-bottom:24px}
+.intro-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.intro h1{font-size:clamp(26px,5vw,38px);font-weight:800;color:var(--text);line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.intro h1 em{font-style:normal;color:var(--blue2)}
+.intro p{font-size:15px;color:var(--muted2);font-weight:300;line-height:1.65;max-width:480px;margin:0 auto}
+
+/* STEP */
+.step{display:none}
+.step.active{display:block;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* STEP HEADER */
+.step-header{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.step-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.step-tag::before{content:'';width:16px;height:2px;background:var(--blue)}
+.step-title{font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px;letter-spacing:-.01em;line-height:1.2}
+.step-sub{font-size:14px;color:var(--muted2);font-weight:300;line-height:1.55}
+
+/* FIELD */
+.field{margin-bottom:24px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:.01em}
+.field label .req{color:var(--blue2);margin-left:2px}
+.field label .opt{color:var(--muted);font-weight:300;font-size:11px;margin-left:6px}
+.field .hint{font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:300;line-height:1.5}
+
+input[type=text],input[type=email],input[type=tel],input[type=url],input[type=number],textarea,select{
+  width:100%;background:var(--surface);border:1px solid var(--border2);
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;
+  padding:13px 16px;outline:none;transition:border-color .2s;
+  -webkit-appearance:none;border-radius:0;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--blue)}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+textarea{resize:vertical;min-height:90px;line-height:1.6}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A99' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;cursor:pointer}
+select option{background:var(--bg2)}
+
+/* RADIO OPTIONS */
+.options{display:flex;flex-direction:column;gap:8px}
+.option{display:flex;align-items:center;gap:14px;padding:13px 16px;border:1px solid var(--border2);cursor:pointer;transition:all .2s;background:var(--surface)}
+.option:hover{border-color:var(--blue2);background:rgba(59,130,246,.04)}
+.option.selected{border-color:var(--blue);background:rgba(59,130,246,.08)}
+.option input{display:none}
+.option-dot{width:16px;height:16px;border:2px solid var(--muted);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.option.selected .option-dot{border-color:var(--blue);background:var(--blue)}
+.option.selected .option-dot::after{content:'';width:5px;height:5px;border-radius:50%;background:#fff}
+.option-text{font-size:13px;font-weight:400;color:var(--muted2);line-height:1.4}
+.option.selected .option-text{color:var(--text)}
+
+/* CHECKBOX */
+.check-options{display:flex;flex-direction:column;gap:8px}
+.check-option{display:flex;align-items:flex-start;gap:14px;padding:13px 16px;border:1px solid var(--border2);cursor:pointer;transition:all .2s;background:var(--surface)}
+.check-option:hover{border-color:var(--blue2);background:rgba(59,130,246,.04)}
+.check-option.selected{border-color:var(--blue);background:rgba(59,130,246,.08)}
+.check-option input{display:none}
+.check-box{width:16px;height:16px;border:2px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px}
+.check-option.selected .check-box{border-color:var(--blue);background:var(--blue)}
+.check-option.selected .check-box::after{content:'✓';font-size:10px;color:#fff;font-weight:700}
+.check-text{font-size:13px;font-weight:400;color:var(--muted2);line-height:1.45}
+.check-option.selected .check-text{color:var(--text)}
+
+/* GRID 2 */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* CONFIRM BLOCK */
+.confirm-block{background:var(--surface);border:1px solid var(--border);padding:20px;margin-bottom:16px}
+.confirm-block p{font-size:13px;color:var(--muted2);line-height:1.6;font-weight:300}
+.confirm-block strong{color:var(--text);font-weight:600;display:block;margin-bottom:6px}
+
+/* NOTICE */
+.notice{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);padding:14px 18px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start}
+.notice-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.notice p{font-size:12px;color:#FCD34D;font-weight:300;line-height:1.55}
+.notice p strong{font-weight:600}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:28px 0}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:12px;margin-top:36px}
+.btn-next{flex:1;background:var(--blue);color:#fff;padding:14px;font-size:14px;font-weight:700;letter-spacing:.03em;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-next:hover{opacity:.9;transform:translateY(-1px)}
+.btn-next .arr{transition:transform .2s}
+.btn-next:hover .arr{transform:translateX(4px)}
+.btn-back{background:transparent;color:var(--muted2);padding:14px 22px;font-size:14px;font-weight:500;border:1px solid var(--border2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;white-space:nowrap}
+.btn-back:hover{border-color:var(--border2);color:var(--text)}
+
+/* ERROR */
+.field-error{font-size:12px;color:var(--error);margin-top:5px;display:none}
+.field.has-error input,.field.has-error select,.field.has-error textarea{border-color:var(--error)}
+.field.has-error .field-error{display:block}
+
+/* SUCCESS */
+.success{text-align:center;padding:48px 0}
+.success-icon{width:72px;height:72px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-size:30px}
+.success h2{font-size:28px;font-weight:800;color:var(--text);margin-bottom:12px;letter-spacing:-.02em}
+.success p{font-size:15px;color:var(--muted2);font-weight:300;line-height:1.65;max-width:400px;margin:0 auto 24px}
+.success-box{background:var(--surface);border:1px solid var(--border);padding:24px;text-align:left;margin-top:24px}
+.success-box p{font-size:13px;color:var(--muted2);line-height:1.7;font-weight:300}
+.success-box strong{color:var(--text);font-weight:700;display:block;margin-bottom:10px}
+
+@media(max-width:600px){
+  .header{padding:24px 20px 0}
+  .form-wrap{padding:36px 20px 60px}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progress" style="width:16.6%"></div></div>
+
+<div class="header">
+  <a href="./index.html" class="logo">Lex<span class="dot">.</span>Review</a>
+  <div class="step-indicator" id="stepLabel">Passo 1 di 6</div>
+</div>
+
+<div class="form-wrap">
+
+  <!-- INTRO -->
+  <div class="intro" id="introBlock">
+    <div class="intro-badge">Benvenuto in LexReview</div>
+    <h1>Configuriamo il Suo<br><em>studio in 5 minuti.</em></h1>
+    <p>Queste informazioni ci permettono di avviare il servizio correttamente. Le chiediamo una sola volta — poi pensiamo a tutto noi.</p>
+  </div>
+
+  <!-- STEP 1 — Dati studio -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-tag">01 — Dati studio</div>
+      <div class="step-title">Il Suo studio</div>
+      <div class="step-sub">Informazioni di base per identificare correttamente lo studio.</div>
+    </div>
+
+    <div class="field" id="f-nome">
+      <label>Nome e cognome <span class="req">*</span></label>
+      <input type="text" id="nome" placeholder="Avv. Mario Rossi">
+      <div class="field-error">Campo obbligatorio</div>
+    </div>
+
+    <div class="field" id="f-studio">
+      <label>Nome dello studio <span class="req">*</span></label>
+      <input type="text" id="studio" placeholder="Studio Legale Rossi">
+      <div class="field-error">Campo obbligatorio</div>
+    </div>
+
+    <div class="grid2">
+      <div class="field" id="f-citta">
+        <label>Città <span class="req">*</span></label>
+        <input type="text" id="citta" placeholder="Milano">
+        <div class="field-error">Campo obbligatorio</div>
+      </div>
+      <div class="field">
+        <label>Sito web <span class="opt">(opzionale)</span></label>
+        <input type="url" id="sito" placeholder="https://studiorossi.it">
+      </div>
+    </div>
+
+    <div class="field" id="f-indirizzo">
+      <label>Indirizzo studio <span class="req">*</span></label>
+      <input type="text" id="indirizzo" placeholder="Via Roma 1, 20100 Milano">
+      <div class="field-error">Campo obbligatorio</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-next" onclick="nextStep(1)">Continua <span class="arr">→</span></button>
+    </div>
+  </div>
+
+  <!-- STEP 2 — Specializzazioni -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-tag">02 — Specializzazioni</div>
+      <div class="step-title">Aree di pratica</div>
+      <div class="step-sub">Selezioni le specializzazioni principali dello studio. Verranno usate per calibrare il tono delle risposte e le comunicazioni.</div>
+    </div>
+
+    <div class="field" id="f-spec">
+      <label>Specializzazioni principali <span class="req">*</span><span class="opt">— selezioni fino a 3</span></label>
+      <div class="check-options" id="spec-options">
+        <label class="check-option" onclick="toggleCheck(this,'spec')">
+          <input type="checkbox" value="Diritto del Lavoro">
+          <div class="check-box"></div>
+          <div class="check-text">Diritto del Lavoro</div>
+        </label>
+        <label class="check-option" onclick="toggleCheck(this,'spec')">
+          <input type="checkbox" value="Diritto di Famiglia">
+          <div class="check-box"></div>
+          <div class="check-text">Diritto di Famiglia</div>
+        </label>
+        <label class="check-option" onclick="toggleCheck(this,'spec')">
+          <input type="checkbox" value="Diritto Civile">
+          <div class="check-box"></div>
+          <div class="check-text">Diritto Civile</div>
+        </label>
+        <label class="check-option" onclick="toggleCheck(this,'spec')">
+          <input type="checkbox" value="Diritto Penale">
+          <div class="check-box"></div>
+          <div class="check-text">Diritto Penale</div>
+        </label>
+        <label class="check-option" onclick="toggleCheck(this,'spec')">
+          <input type="checkbox" value="Diritto Societario">
+          <div class="check-box"></div>
+          <div class="check-text">Diritto Societario / Commerciale</div>
+        </label>
+        <label class="check-option" onclick="toggleCheck(this,'spec')">
+          <input type="checkbox" value="Diritto Amministrativo">
+          <div class="check-box"></div>
+          <div class="check-text">Diritto Amministrativo</div>
+        </label>
+        <label class="check-option" onclick="toggleCheck(this,'spec')">
+          <input type="checkbox" value="Diritto Successorio">
+          <div class="check-box"></div>
+          <div class="check-text">Diritto Successorio</div>
+        </label>
+        <label class="check-option" onclick="toggleCheck(this,'spec')">
+          <input type="checkbox" value="Altro">
+          <div class="check-box"></div>
+          <div class="check-text">Altro</div>
+        </label>
+      </div>
+      <div class="field-error">Selezionare almeno una specializzazione</div>
+    </div>
+
+    <div class="field">
+      <label>Tipo di clienti prevalenti</label>
+      <div class="options" id="clienti-options">
+        <label class="option" onclick="selectOption(this,'clienti')">
+          <input type="radio" name="clienti" value="Privati">
+          <div class="option-dot"></div>
+          <div class="option-text">Prevalentemente privati</div>
+        </label>
+        <label class="option" onclick="selectOption(this,'clienti')">
+          <input type="radio" name="clienti" value="Aziende">
+          <div class="option-dot"></div>
+          <div class="option-text">Prevalentemente aziende</div>
+        </label>
+        <label class="option" onclick="selectOption(this,'clienti')">
+          <input type="radio" name="clienti" value="Entrambi">
+          <div class="option-dot"></div>
+          <div class="option-text">Mix di privati e aziende</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Mandati chiusi mediamente al mese <span class="opt">(stima)</span></label>
+      <div class="options" id="mandati-options">
+        <label class="option" onclick="selectOption(this,'mandati')">
+          <input type="radio" name="mandati" value="1-3">
+          <div class="option-dot"></div>
+          <div class="option-text">1 – 3 mandati</div>
+        </label>
+        <label class="option" onclick="selectOption(this,'mandati')">
+          <input type="radio" name="mandati" value="4-8">
+          <div class="option-dot"></div>
+          <div class="option-text">4 – 8 mandati</div>
+        </label>
+        <label class="option" onclick="selectOption(this,'mandati')">
+          <input type="radio" name="mandati" value="9+">
+          <div class="option-dot"></div>
+          <div class="option-text">Più di 8 mandati</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(2)">← Indietro</button>
+      <button class="btn-next" onclick="nextStep(2)">Continua <span class="arr">→</span></button>
+    </div>
+  </div>
+
+  <!-- STEP 3 — Google Business Profile -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-tag">03 — Google Business Profile</div>
+      <div class="step-title">Accesso al profilo Google</div>
+      <div class="step-sub">Abbiamo bisogno di accesso manager al profilo GBP per poter operare. Le istruzioni sono qui sotto.</div>
+    </div>
+
+    <div class="notice">
+      <div class="notice-icon">⚠️</div>
+      <p><strong>Come aggiungere LexReview come manager GBP:</strong> Vada su Google Business Profile → Impostazioni → Gestisci utenti → Aggiungi utente → inserisca <strong>onboarding@lexreview.it</strong> → ruolo Manager → Invita. Le invieremo conferma entro 24h.</p>
+    </div>
+
+    <div class="field" id="f-gbp-link">
+      <label>Link al profilo Google Maps <span class="req">*</span></label>
+      <div class="hint">Cerchi il Suo studio su Google Maps → clicchi "Condividi" → copi il link.</div>
+      <input type="url" id="gbp-link" placeholder="https://maps.google.com/...">
+      <div class="field-error">Campo obbligatorio</div>
+    </div>
+
+    <div class="field" id="f-gbp-email">
+      <label>Email Google Account del profilo GBP <span class="req">*</span></label>
+      <div class="hint">L'email con cui ha creato o gestisce il profilo Google Business.</div>
+      <input type="email" id="gbp-email" placeholder="studiorossi@gmail.com">
+      <div class="field-error">Inserire un'email valida</div>
+    </div>
+
+    <div class="field" id="f-gbp-confirm">
+      <label>Conferma accesso <span class="req">*</span></label>
+      <div class="check-options">
+        <label class="check-option" id="gbp-check" onclick="toggleSingle(this,'gbp')">
+          <input type="checkbox" id="gbp-added">
+          <div class="check-box"></div>
+          <div class="check-text">Ho aggiunto LexReview come manager del mio profilo GBP</div>
+        </label>
+      </div>
+      <div class="field-error" id="gbp-error">Confermare prima di procedere</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(3)">← Indietro</button>
+      <button class="btn-next" onclick="nextStep(3)">Continua <span class="arr">→</span></button>
+    </div>
+  </div>
+
+  <!-- STEP 4 — Gmail raccolta recensioni -->
+  <div class="step" id="step4">
+    <div class="step-header">
+      <div class="step-tag">04 — Email raccolta recensioni</div>
+      <div class="step-title">Accesso delegato Gmail</div>
+      <div class="step-sub">Le email di raccolta recensioni partiranno dal Suo indirizzo, non dal nostro. Per farlo, abbiamo bisogno di accesso delegato alla Sua Gmail.</div>
+    </div>
+
+    <div class="notice">
+      <div class="notice-icon">⚠️</div>
+      <p><strong>Come concedere accesso delegato Gmail:</strong> Apra Gmail → Impostazioni (icona ingranaggio) → Tutti i settings → scheda "Account e importazione" → "Concedi accesso al tuo account" → Aggiungi un altro account → inserisca <strong>ops@lexreview.it</strong> → Avanti → Invia email per concedere accesso.</p>
+    </div>
+
+    <div class="field" id="f-gmail">
+      <label>Indirizzo Gmail dello studio <span class="req">*</span></label>
+      <div class="hint">L'indirizzo da cui devono partire le email ai clienti per la raccolta recensioni.</div>
+      <input type="email" id="gmail" placeholder="avv.rossi@gmail.com">
+      <div class="field-error">Inserire un'email valida</div>
+    </div>
+
+    <div class="field">
+      <label>Tono preferito nelle comunicazioni ai clienti</label>
+      <div class="options" id="tono-options">
+        <label class="option" onclick="selectOption(this,'tono')">
+          <input type="radio" name="tono" value="Molto formale">
+          <div class="option-dot"></div>
+          <div class="option-text">Molto formale — "Egregio", "La prego di voler considerare..."</div>
+        </label>
+        <label class="option" onclick="selectOption(this,'tono')">
+          <input type="radio" name="tono" value="Formale">
+          <div class="option-dot"></div>
+          <div class="option-text">Formale — "Gentile", "Le sarei grato..."</div>
+        </label>
+        <label class="option" onclick="selectOption(this,'tono')">
+          <input type="radio" name="tono" value="Professionale cordiale">
+          <div class="option-dot"></div>
+          <div class="option-text">Professionale ma cordiale — "Gentile [Nome]", tono più caldo</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="field" id="f-gmail-confirm">
+      <label>Conferma accesso <span class="req">*</span></label>
+      <div class="check-options">
+        <label class="check-option" id="gmail-check" onclick="toggleSingle(this,'gmail')">
+          <input type="checkbox" id="gmail-added">
+          <div class="check-box"></div>
+          <div class="check-text">Ho concesso accesso delegato Gmail a LexReview</div>
+        </label>
+      </div>
+      <div class="field-error" id="gmail-error">Confermare prima di procedere</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(4)">← Indietro</button>
+      <button class="btn-next" onclick="nextStep(4)">Continua <span class="arr">→</span></button>
+    </div>
+  </div>
+
+  <!-- STEP 5 — Limiti editoriali -->
+  <div class="step" id="step5">
+    <div class="step-header">
+      <div class="step-tag">05 — Limiti editoriali</div>
+      <div class="step-title">Cosa non toccare mai</div>
+      <div class="step-sub">Queste informazioni sono fondamentali. Le usiamo per non commettere mai errori nelle comunicazioni pubbliche a nome Suo.</div>
+    </div>
+
+    <div class="field">
+      <label>Argomenti o aree che NON devono mai apparire nelle comunicazioni pubbliche</label>
+      <div class="hint">Es. "non menzionare mai cause di divorzio", "non fare riferimento a clienti aziendali", "evitare qualsiasi riferimento a procedimenti penali".</div>
+      <textarea id="limiti" placeholder="Scriva qui tutto quello che vuole che non venga mai menzionato o comunicato pubblicamente..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Ci sono altri professionisti nello studio oltre a Lei?</label>
+      <div class="options" id="team-options">
+        <label class="option" onclick="selectOption(this,'team')">
+          <input type="radio" name="team" value="Solo">
+          <div class="option-dot"></div>
+          <div class="option-text">No, studio individuale</div>
+        </label>
+        <label class="option" onclick="selectOption(this,'team')">
+          <input type="radio" name="team" value="Associato">
+          <div class="option-dot"></div>
+          <div class="option-text">Sì, studio associato</div>
+        </label>
+        <label class="option" onclick="selectOption(this,'team')">
+          <input type="radio" name="team" value="Strutturato">
+          <div class="option-dot"></div>
+          <div class="option-text">Sì, studio strutturato con più avvocati</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Esiste una persona di riferimento per le comunicazioni urgenti (es. social media manager, segreteria)?</label>
+      <input type="text" id="referente" placeholder="Nome, ruolo e contatto — oppure lasci vuoto">
+    </div>
+
+    <div class="field">
+      <label>Numero di telefono per emergenze reputazionali <span class="opt">(opzionale)</span></label>
+      <div class="hint">Lo usiamo solo in caso di crisi grave — recensione coordinata falsa, articolo negativo, ecc.</div>
+      <input type="tel" id="telefono" placeholder="+39 02 1234567">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(5)">← Indietro</button>
+      <button class="btn-next" onclick="nextStep(5)">Continua <span class="arr">→</span></button>
+    </div>
+  </div>
+
+  <!-- STEP 6 — Riepilogo e invio -->
+  <div class="step" id="step6">
+    <div class="step-header">
+      <div class="step-tag">06 — Conferma</div>
+      <div class="step-title">Tutto pronto.</div>
+      <div class="step-sub">Riveda i dati prima di inviare. Li riceveremo immediatamente e configureremo il servizio entro 48 ore.</div>
+    </div>
+
+    <div class="confirm-block">
+      <strong>Cosa succede adesso</strong>
+      <p>
+        — Riceverà una email di conferma entro pochi minuti<br>
+        — Verificheremo l'accesso al GBP e alla Gmail entro 24h<br>
+        — Configureremo il sistema di raccolta recensioni<br>
+        — La prima ottimizzazione del profilo Google sarà completata entro 7 giorni<br>
+        — Riceverà la sua dashboard Looker Studio entro 48h
+      </p>
+    </div>
+
+    <div class="field" id="f-email">
+      <label>Email di conferma <span class="req">*</span></label>
+      <div class="hint">Inviamo qui la conferma e tutte le comunicazioni operative.</div>
+      <input type="email" id="email" placeholder="avv.rossi@studiolegalerossi.it">
+      <div class="field-error">Inserire un'email valida</div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);padding:16px 18px;margin-bottom:8px">
+      <p style="font-size:12px;color:var(--muted);line-height:1.6;font-weight:300">I dati forniti vengono utilizzati esclusivamente per erogare il servizio LexReview. Non vengono condivisi con terzi. Trattamento conforme al GDPR — Regolamento UE 2016/679.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(6)">← Indietro</button>
+      <button class="btn-next" onclick="submitForm()" style="background:var(--green)">Invia e attiva il servizio <span class="arr">→</span></button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="step" id="stepSuccess">
+    <div class="success">
+      <div class="success-icon">✓</div>
+      <h2>Onboarding completato.</h2>
+      <p>Abbiamo ricevuto tutto. Configureremo il servizio entro <strong style="color:var(--text)">48 ore</strong> e Le invieremo conferma all'email indicata.</p>
+      <div class="success-box">
+        <p>
+          <strong>Prossimi passi:</strong>
+          — Verifica accesso GBP e Gmail entro 24h<br>
+          — Prima ottimizzazione profilo Google entro 7 giorni<br>
+          — Dashboard KPI condivisa entro 48h<br>
+          — Prima raccolta recensioni attiva dal primo mandato concluso
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentStep = 1;
+const totalSteps = 6;
+const selectedValues = {};
+const checkedValues = { spec: [] };
+
+function updateProgress() {
+  const pct = (currentStep / totalSteps) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('stepLabel').textContent = 'Passo ' + currentStep + ' di ' + totalSteps;
+}
+
+function selectOption(el, group) {
+  document.querySelectorAll('#' + group + '-options .option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedValues[group] = el.querySelector('input').value;
+}
+
+function toggleCheck(el, group) {
+  const val = el.querySelector('input').value;
+  const maxChecks = { spec: 3 };
+  const max = maxChecks[group] || 99;
+
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+    checkedValues[group] = checkedValues[group].filter(v => v !== val);
+  } else {
+    if (checkedValues[group] && checkedValues[group].length >= max) return;
+    el.classList.add('selected');
+    if (!checkedValues[group]) checkedValues[group] = [];
+    checkedValues[group].push(val);
+  }
+}
+
+function toggleSingle(el, key) {
+  el.classList.toggle('selected');
+  selectedValues[key + '_confirmed'] = el.classList.contains('selected');
+}
+
+function validateStep(n) {
+  let valid = true;
+
+  const req = (id, fieldId) => {
+    const f = document.getElementById(fieldId || 'f-' + id);
+    const v = document.getElementById(id) ? document.getElementById(id).value.trim() : '';
+    if (!v) { if(f) f.classList.add('has-error'); valid = false; }
+    else if(f) f.classList.remove('has-error');
+  };
+
+  const reqEmail = (id, fieldId) => {
+    const f = document.getElementById(fieldId || 'f-' + id);
+    const v = document.getElementById(id) ? document.getElementById(id).value.trim() : '';
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!v || !re.test(v)) { if(f) f.classList.add('has-error'); valid = false; }
+    else if(f) f.classList.remove('has-error');
+  };
+
+  if (n === 1) {
+    req('nome'); req('studio'); req('citta'); req('indirizzo');
+  }
+  if (n === 2) {
+    const f = document.getElementById('f-spec');
+    if (!checkedValues.spec || checkedValues.spec.length === 0) {
+      f.classList.add('has-error'); valid = false;
+    } else f.classList.remove('has-error');
+  }
+  if (n === 3) {
+    req('gbp-link', 'f-gbp-link');
+    reqEmail('gbp-email', 'f-gbp-email');
+    if (!selectedValues['gbp_confirmed']) {
+      document.getElementById('gbp-error').style.display = 'block'; valid = false;
+    } else document.getElementById('gbp-error').style.display = 'none';
+  }
+  if (n === 4) {
+    reqEmail('gmail', 'f-gmail');
+    if (!selectedValues['gmail_confirmed']) {
+      document.getElementById('gmail-error').style.display = 'block'; valid = false;
+    } else document.getElementById('gmail-error').style.display = 'none';
+  }
+  if (n === 6) {
+    reqEmail('email', 'f-email');
+  }
+  return valid;
+}
+
+function nextStep(n) {
+  if (!validateStep(n)) return;
+  document.getElementById('step' + n).classList.remove('active');
+  currentStep = n + 1;
+  if (currentStep <= totalSteps) {
+    document.getElementById('step' + currentStep).classList.add('active');
+    if (n === 1) document.getElementById('introBlock').style.display = 'none';
+  }
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevStep(n) {
+  document.getElementById('step' + n).classList.remove('active');
+  currentStep = n - 1;
+  document.getElementById('step' + currentStep).classList.add('active');
+  if (currentStep === 1) document.getElementById('introBlock').style.display = 'block';
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function submitForm() {
+  if (!validateStep(6)) return;
+
+  const data = {
+    nome: document.getElementById('nome').value,
+    studio: document.getElementById('studio').value,
+    citta: document.getElementById('citta').value,
+    indirizzo: document.getElementById('indirizzo').value,
+    sito: document.getElementById('sito').value || 'Non fornito',
+    specializzazioni: (checkedValues.spec || []).join(', ') || 'Non specificato',
+    clienti: selectedValues['clienti'] || 'Non specificato',
+    mandati_mese: selectedValues['mandati'] || 'Non specificato',
+    gbp_link: document.getElementById('gbp-link').value,
+    gbp_email: document.getElementById('gbp-email').value,
+    gbp_accesso_confermato: selectedValues['gbp_confirmed'] ? 'Sì' : 'No',
+    gmail_raccolta: document.getElementById('gmail').value,
+    gmail_accesso_confermato: selectedValues['gmail_confirmed'] ? 'Sì' : 'No',
+    tono: selectedValues['tono'] || 'Non specificato',
+    limiti_editoriali: document.getElementById('limiti').value || 'Nessuno',
+    struttura_studio: selectedValues['team'] || 'Non specificato',
+    referente: document.getElementById('referente').value || 'Nessuno',
+    telefono_emergenze: document.getElementById('telefono').value || 'Non fornito',
+    email_conferma: document.getElementById('email').value,
+    _subject: 'Onboarding completato — ' + document.getElementById('studio').value + ' (' + document.getElementById('citta').value + ')',
+  };
+
+  const btn = document.querySelector('#step6 .btn-next');
+  btn.textContent = 'Invio in corso...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://formspree.io/f/xwvryvrg', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (res.ok) {
+      document.getElementById('step6').classList.remove('active');
+      document.getElementById('stepSuccess').classList.add('active');
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('stepLabel').textContent = 'Completato ✓';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      btn.textContent = 'Riprova';
+      btn.disabled = false;
+      alert("Errore nell'invio. Riprovi o ci contatti direttamente.");
+    }
+  } catch(e) {
+    btn.textContent = 'Riprova';
+    btn.disabled = false;
+    alert("Errore di connessione. Verifichi la connessione internet e riprovi.");
+  }
+}
+</script>
+</body>
+</html>
