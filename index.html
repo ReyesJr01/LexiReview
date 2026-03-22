@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LexReview — Reputazione digitale per studi legali</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080808;--bg2:#0E0E0E;--surface:#141414;
+  --border:rgba(212,175,55,0.12);--border2:rgba(212,175,55,0.22);
+  --blue:#D4AF37;--blue2:#E8C84A;--blue3:#F5DFA0;
+  --green:#C9A227;--green2:#E8C84A;
+  --text:#F5F0E8;--muted:#6B6355;--muted2:#A09070;
+  --audit-url: "./audit_tool.html";
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes ping{0%{transform:scale(1);opacity:1}75%,100%{transform:scale(2.2);opacity:0}}
+@keyframes glow{0%,100%{box-shadow:0 0 24px rgba(212,175,55,.25)}50%{box-shadow:0 0 48px rgba(212,175,55,.5)}}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:rgba(8,8,8,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:.02em}
+.logo .dot{color:var(--blue)}
+.nav-r{display:flex;gap:28px;align-items:center}
+.nav-r a{font-size:13px;color:var(--muted2);text-decoration:none;transition:color .2s}
+.nav-r a:hover{color:var(--text)}
+.nav-cta{background:var(--blue);color:#080808 !important;padding:9px 22px;font-weight:700 !important;font-size:13px !important;letter-spacing:.02em;transition:all .2s !important;animation:glow 3s ease infinite}
+.nav-cta:hover{opacity:.9;transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 40px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);animation:pulse 5s ease-in-out infinite}
+.o1{width:700px;height:700px;background:rgba(212,175,55,.06);top:-300px;left:-200px}
+.o2{width:500px;height:500px;background:rgba(212,175,55,.04);bottom:-200px;right:-100px;animation-delay:2s}
+.o3{width:350px;height:350px;background:rgba(212,175,55,.03);top:35%;right:-100px;animation-delay:1s}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(212,175,55,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,.03) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%)}
+
+.hero-badge{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(212,175,55,.3);background:rgba(212,175,55,.06);padding:7px 20px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue3);margin-bottom:28px;position:relative;z-index:1;animation:fadeIn .6s ease .1s both}
+.ping-wrap{position:relative;width:8px;height:8px;flex-shrink:0}
+.ping-wrap::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--blue);animation:ping 1.5s cubic-bezier(0,0,.2,1) infinite}
+.ping-wrap::after{content:'';position:absolute;inset:1px;border-radius:50%;background:var(--blue)}
+
+.hero-title{font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:clamp(56px,8vw,104px);line-height:.90;letter-spacing:-.01em;position:relative;z-index:1;animation:fadeUp .8s ease .2s both;margin-bottom:10px}
+.ht-w{display:block;color:var(--text)}
+.ht-b{display:block;background:linear-gradient(90deg,#B8942A,#D4AF37,#F5DFA0,#D4AF37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ht-o{display:block;-webkit-text-stroke:1px rgba(212,175,55,.3);-webkit-text-fill-color:transparent}
+
+.hero-sub{font-size:18px;color:var(--muted2);font-weight:300;max-width:560px;margin:24px auto 36px;line-height:1.75;position:relative;z-index:1;animation:fadeUp .8s ease .35s both}
+
+.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;animation:fadeUp .8s ease .5s both}
+.btn-main{background:var(--blue);color:#080808;padding:16px 38px;font-size:15px;font-weight:700;letter-spacing:.02em;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all .2s;animation:glow 3s ease infinite 1s}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(212,175,55,.35)}
+.arr{transition:transform .2s}.btn-main:hover .arr{transform:translateX(5px)}
+.btn-ghost{background:transparent;color:var(--muted2);padding:15px 32px;font-size:14px;font-weight:500;border:1px solid var(--border2);cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
+
+.proof-row{display:flex;align-items:center;justify-content:center;gap:0;margin-top:44px;border:1px solid var(--border);overflow:hidden;position:relative;z-index:1;animation:fadeIn 1s ease .85s both}
+.pr-item{flex:1;padding:24px 20px;text-align:center;border-right:1px solid var(--border);background:rgba(255,255,255,.015);transition:background .2s}
+.pr-item:last-child{border-right:none}
+.pr-item:hover{background:rgba(212,175,55,.04)}
+.pr-val{font-family:'DM Sans',sans-serif;font-size:28px;font-weight:800;color:var(--text);display:block;line-height:1;margin-bottom:5px}
+.pr-val .c{color:var(--blue2)}
+.pr-lbl{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* URGENCY */
+.urgency{background:linear-gradient(90deg,rgba(212,175,55,.08),rgba(212,175,55,.04),rgba(212,175,55,.08));border-top:1px solid rgba(212,175,55,.15);border-bottom:1px solid rgba(212,175,55,.15);padding:13px 40px;text-align:center;font-size:13px;color:var(--blue3);font-weight:500}
+.urgency strong{color:var(--blue3)}
+
+/* MARQUEE */
+.mq-wrap{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:15px 0;overflow:hidden}
+.mq-track{display:flex;animation:marquee 20s linear infinite;width:max-content}
+.mq-item{display:flex;align-items:center;gap:14px;padding:0 40px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.mq-dot{width:3px;height:3px;border-radius:50%;background:var(--blue);opacity:.4}
+
+/* SHARED */
+section{padding:88px 40px;position:relative;z-index:1}
+.wrap{max-width:1100px;margin:0 auto}
+.lbl{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue3);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.lbl::before{content:'';width:24px;height:1px;background:linear-gradient(90deg,var(--blue),transparent)}
+.ttl{font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:clamp(36px,5vw,62px);line-height:1.02;letter-spacing:-.01em;color:var(--text);margin-bottom:20px}
+.ttl em{font-style:italic;color:var(--blue2)}
+.sub{font-size:16px;color:var(--muted2);font-weight:300;line-height:1.6;max-width:520px}
+
+/* RECOGNIZE */
+.recognize{background:var(--bg)}
+.rec-intro{max-width:720px;margin-bottom:52px}
+.rec-intro p{font-size:16px;color:var(--muted2);font-weight:300;line-height:1.65}
+.rec-intro p strong{color:var(--text);font-weight:500}
+
+.rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border)}
+.rec-card{background:var(--bg);padding:36px;transition:background .25s;position:relative;overflow:hidden}
+.rec-card:hover{background:var(--surface)}
+.rec-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:0;transition:opacity .3s}
+.rec-card:hover::after{opacity:1}
+.rec-q{font-size:16px;color:var(--text);font-weight:500;line-height:1.45;margin-bottom:12px}
+.rec-q::before{content:'"';color:var(--blue);font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;line-height:0;vertical-align:-10px;margin-right:3px}
+.rec-a{font-size:14px;color:var(--muted2);font-weight:300;line-height:1.65}
+
+/* RESULTS */
+.results{background:var(--bg2);border-top:1px solid var(--border)}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:56px}
+.res-card{background:var(--bg2);padding:36px;position:relative;overflow:hidden;transition:background .25s}
+.res-card:hover{background:var(--surface)}
+.res-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:0;transition:opacity .3s}
+.res-card:hover::before{opacity:1}
+.res-badges{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.rb{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px}
+.rb.before{background:rgba(107,122,153,.1);color:#8A9ABF;border:1px solid rgba(107,122,153,.25)}
+.rb.after{background:rgba(212,175,55,.08);color:var(--blue2);border:1px solid rgba(212,175,55,.2)}
+.res-arr{color:var(--muted);font-size:12px}
+.res-big{font-family:'DM Sans',sans-serif;font-size:46px;font-weight:800;color:var(--blue2);line-height:1;margin-bottom:10px;letter-spacing:-.03em}
+.res-big span{font-size:18px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:300}
+.res-text{font-size:14px;color:var(--muted2);line-height:1.65;font-weight:300}
+.res-studio{font-size:11px;color:var(--muted);margin-top:16px;padding-top:16px;border-top:1px solid var(--border);font-weight:500;letter-spacing:.03em}
+
+/* HOW */
+.how{background:var(--bg);border-top:1px solid var(--border)}
+.how-steps{margin-top:64px}
+.how-step{display:grid;grid-template-columns:100px 1px 1fr;gap:0 36px;padding:44px 0;border-bottom:1px solid var(--border)}
+.how-step:last-child{border-bottom:none}
+.how-l{text-align:right;padding-top:4px}
+.how-n{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--blue3);margin-bottom:5px}
+.how-w{font-size:11px;color:var(--muted);letter-spacing:.03em}
+.how-line{width:1px;background:var(--border);position:relative}
+.how-line::before{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px rgba(212,175,55,.6)}
+.how-r h3{font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:0;line-height:1.15}
+.how-r p{font-size:15px;color:var(--muted2);line-height:1.75;font-weight:300;max-width:560px}
+.auto-tag{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:11px;color:var(--blue3);background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.18);padding:4px 12px;font-weight:600;letter-spacing:.06em}
+.auto-tag::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue)}
+
+/* TRUST */
+
+
+/* PRICING */
+.pricing{background:var(--bg2);border-top:1px solid var(--border)}
+.price-wrap{max-width:680px;margin:56px auto 0}
+.price-card{background:var(--surface);border:1px solid rgba(212,175,55,.3);padding:52px;position:relative;overflow:hidden}
+.price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#8B6914,#D4AF37,#F5DFA0,#D4AF37,#8B6914)}
+.price-name{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.price-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px;flex-wrap:wrap;gap:20px}
+.price-amount{display:flex;align-items:flex-start;gap:5px}
+.price-sym{font-family:'DM Sans',sans-serif;font-size:22px;font-weight:700;color:var(--blue3);margin-top:14px}
+.price-num{font-family:'DM Sans',sans-serif;font-size:80px;font-weight:800;color:var(--blue);line-height:.88;letter-spacing:-.04em}
+.price-mo{font-size:14px;color:var(--muted);margin-top:6px}
+.price-setup{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--blue3);background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);padding:8px 16px;font-weight:500;margin-top:4px;align-self:flex-end}
+.price-setup::before{content:'🎁'}
+.price-feats{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--border);padding-top:32px;margin-top:32px}
+.pf{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);font-size:13.5px;color:var(--muted2);font-weight:300;line-height:1.4;align-items:flex-start}
+.pf:nth-last-child(-n+2){border-bottom:none}
+.pf:nth-child(odd){padding-right:20px}
+.fc{width:16px;height:16px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.price-btn-wrap{margin-top:40px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.price-btn{display:block;text-align:center;padding:16px 60px;font-size:15px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;background:var(--blue);color:#080808;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;width:100%;animation:glow 3s ease infinite 2s}
+.price-btn:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 10px 40px rgba(212,175,55,.3)}
+.price-note{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:16px}
+.price-note::before,.price-note::after{content:'';flex:1;height:1px;background:var(--border)}
+.roi-box{max-width:680px;margin:32px auto 0;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.18);padding:32px 36px}
+.roi-lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue3);font-weight:600;margin-bottom:14px}
+.roi-text{font-size:15px;color:var(--muted2);font-weight:300;line-height:1.75}
+.roi-text strong{color:var(--text);font-weight:500}
+.roi-text .g{color:var(--blue3);font-weight:500}
+
+/* FAQ */
+.faq-sec{background:var(--bg);border-top:1px solid var(--border)}
+.faqs{margin-top:48px;border:1px solid var(--border)}
+.fq{border-bottom:1px solid var(--border)}
+.fq:last-child{border-bottom:none}
+.fq-btn{width:100%;background:none;border:none;cursor:pointer;text-align:left;padding:22px 32px;display:flex;justify-content:space-between;align-items:center;gap:20px;transition:background .2s}
+.fq-btn:hover{background:rgba(212,175,55,.02)}
+.fq-q{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;color:var(--text);line-height:1.3;letter-spacing:-.01em}
+.fq-ico{width:28px;height:28px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted);font-size:16px;transition:all .3s}
+.fq.open .fq-ico{background:var(--blue);border-color:var(--blue);color:#080808;transform:rotate(45deg)}
+.fq-ans{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.fq.open .fq-ans{max-height:400px}
+.fq-ans p{padding:0 32px 24px;font-size:15px;color:var(--muted2);line-height:1.75;font-weight:300;max-width:680px}
+
+/* CTA FINALE */
+.cta-fin{background:var(--bg);border-top:1px solid var(--border);padding:100px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.06) 0%,transparent 70%);pointer-events:none}
+.cta-fin .ttl{max-width:700px;margin:0 auto 16px;position:relative}
+.cta-fin .sub{margin:0 auto 48px;text-align:center;max-width:460px;position:relative}
+.cta-small{font-size:12px;color:var(--muted);margin-top:16px;display:flex;align-items:center;justify-content:center;gap:16px;position:relative}
+.cta-small::before,.cta-small::after{content:'';flex:1;max-width:60px;height:1px;background:var(--border)}
+
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.foot-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:700;color:var(--text);text-decoration:none}
+.foot-logo .dot{color:var(--blue)}
+footer p{font-size:12.5px;color:var(--muted)}
+
+@media(max-width:768px){
+  nav{padding:0 20px}.nav-r a:not(.nav-cta){display:none}
+  section{padding:64px 20px}.hero{padding:80px 20px 48px;min-height:auto}
+  .proof-row{flex-wrap:wrap}.pr-item{flex:1 1 40%;border-bottom:1px solid var(--border)}
+  .rec-grid,.res-grid{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr 1fr}
+  .how-step{grid-template-columns:80px 1px 1fr;gap:0 18px}
+  .price-card{padding:32px 24px}
+  .price-feats{grid-template-columns:1fr}
+  .pf:nth-last-child(-n+2){border-bottom:1px solid var(--border)}
+  .pf:last-child{border-bottom:none}
+  footer{flex-direction:column;text-align:center;padding:28px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Lex<span class="dot">.</span>Review</a>
+  <div class="nav-r">
+    <a href="#riconosci">È per Lei?</a>
+    <a href="#come">Come funziona</a>
+    <a href="#prezzo">Prezzo</a>
+    <a href="./audit_tool.html" class="nav-cta">Analizza il Suo studio →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+    <div class="grid-bg"></div>
+  </div>
+  <div class="hero-badge"><span class="ping-wrap"></span>Offerta Fondatori · 2 posti rimasti</div>
+  <h1 class="hero-title">
+    <span class="ht-o">Invisibile online.</span>
+    <span class="ht-w">Clienti persi.</span>
+    <span class="ht-b">Si cambia.</span>
+  </h1>
+  <p class="hero-sub">I potenziali clienti cercano il loro avvocato su Google. Scopra in 30 secondi dove si posiziona il Suo studio, quante stelle hanno i competitor e cosa sta perdendo ogni giorno.</p>
+  <div class="hero-ctas">
+    <a href="./audit_tool.html" class="btn-main">Verifichi se il Suo studio è selezionabile <span class="arr">→</span></a>
+    <a href="#riconosci" class="btn-ghost">Questo parla di me?</a>
+  </div>
+  <div class="proof-row">
+    <div class="pr-item"><span class="pr-val"><span class="c">90%</span></span><div class="pr-lbl">del servizio<br>automatizzato</div></div>
+    <div class="pr-item"><span class="pr-val"><span class="c">24h</span></span><div class="pr-lbl">risposta garantita<br>a ogni recensione</div></div>
+    <div class="pr-item"><span class="pr-val"><span class="c">15min</span></span><div class="pr-lbl">al mese richiesti<br>all'avvocato</div></div>
+    <div class="pr-item"><span class="pr-val"><span class="c">0€</span></span><div class="pr-lbl">primi 60 giorni<br>per i fondatori</div></div>
+  </div>
+</section>
+
+
+<!-- URGENCY -->
+<div class="urgency">⚡ <strong>Offerta Fondatori:</strong> primi <strong>3 studi</strong> selezionati ricevono i primi 60 giorni gratuiti — poi €299/mese. Rimangono <strong>2 posti.</strong></div>
+
+
+<!-- MARQUEE -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <div class="mq-item">GBP Ottimizzato<span class="mq-dot"></span></div>
+    <div class="mq-item">Raccolta Recensioni<span class="mq-dot"></span></div>
+    <div class="mq-item">Monitoraggio 24/7<span class="mq-dot"></span></div>
+    <div class="mq-item">Risposta 24h<span class="mq-dot"></span></div>
+    <div class="mq-item">Deontologia Rispettata<span class="mq-dot"></span></div>
+    <div class="mq-item">Top 3 su Google<span class="mq-dot"></span></div>
+    <div class="mq-item">Report Mensile<span class="mq-dot"></span></div>
+    <div class="mq-item">Zero Contratti Annuali<span class="mq-dot"></span></div>
+    <div class="mq-item">GBP Ottimizzato<span class="mq-dot"></span></div>
+    <div class="mq-item">Raccolta Recensioni<span class="mq-dot"></span></div>
+    <div class="mq-item">Monitoraggio 24/7<span class="mq-dot"></span></div>
+    <div class="mq-item">Risposta 24h<span class="mq-dot"></span></div>
+    <div class="mq-item">Deontologia Rispettata<span class="mq-dot"></span></div>
+    <div class="mq-item">Top 3 su Google<span class="mq-dot"></span></div>
+    <div class="mq-item">Report Mensile<span class="mq-dot"></span></div>
+    <div class="mq-item">Zero Contratti Annuali<span class="mq-dot"></span></div>
+  </div>
+</div>
+
+
+<!-- RICONOSCI -->
+<section class="recognize" id="riconosci">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="lbl">Questo parla di Lei?</div>
+      <h2 class="ttl">Ha già pensato a<br><em>qualcuna di queste cose?</em></h2>
+    </div>
+    <div class="rec-intro reveal">
+      <p>Gli avvocati che ci contattano non cercavano un servizio di marketing. Cercavano una soluzione a un problema che non riuscivano più a ignorare. <strong>Se si riconosce in una sola di queste situazioni, LexReview è per Lei.</strong></p>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card reveal d1">
+        <div class="rec-q">Un collega mi ha detto che i clienti guardano Google prima di chiamare. È davvero così?</div>
+        <div class="rec-a">Sì. Il 73% dei consumatori italiani cerca online un professionista prima di contattarlo. Se il Suo profilo ha meno recensioni dei competitor, chiamano qualcun altro, senza avvisarLa.</div>
+      </div>
+      <div class="rec-card reveal d2">
+        <div class="rec-q">Ho ricevuto una recensione negativa mesi fa e non sapevo come rispondere. È ancora lì senza risposta.</div>
+        <div class="rec-a">Il danno non è la recensione, è il silenzio. Una risposta professionale trasforma una critica in prova di serietà. Noi La scriviamo per Lei, entro 24 ore.</div>
+      </div>
+      <div class="rec-card reveal d3">
+        <div class="rec-q">Vorrei gestire meglio la mia reputazione online, ma non ho tempo né voglia di occuparmene personalmente.</div>
+        <div class="rec-a">Il Suo unico impegno: mandarci i contatti dei clienti con mandato concluso, 15 minuti al mese. Tutto il resto lo gestiamo noi.</div>
+      </div>
+      <div class="rec-card reveal d4">
+        <div class="rec-q">Il Codice Deontologico mi blocca. Non voglio fare cose che non si possono fare.</div>
+        <div class="rec-a">Il Codice vieta la pubblicità comparativa, non la raccolta di recensioni autentiche. Ogni nostra attività è documentata come conforme. Gliene inviamo prova prima di qualsiasi impegno.</div>
+      </div>
+      <div class="rec-card reveal d1">
+        <div class="rec-q">I competitor hanno 80 recensioni e 4.8 stelle. Io ne ho 12 con 3.9. Come si sono distaccati così tanto?</div>
+        <div class="rec-a">Hanno un sistema che raccoglie recensioni automaticamente. Non clienti migliori, un processo migliore. In 90 giorni colmiamo il divario.</div>
+      </div>
+      <div class="rec-card reveal d2">
+        <div class="rec-q">Non so nemmeno quante volte appare il mio studio su Google ogni settimana. Non l'ho mai controllato.</div>
+        <div class="rec-a">I competitor sì, e lo usano ogni giorno. L'audit gratuito Le mostra la situazione reale in 24 ore, senza alcun impegno.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CHI SIAMO -->
+<section style="background:var(--bg2);border-top:1px solid var(--border);padding:88px 40px;position:relative;z-index:1" id="chi-siamo">
+  <div class="wrap">
+    <div style="max-width:640px;margin:0 auto" class="reveal">
+      <div class="lbl">Chi sono</div>
+      <h2 class="ttl" style="font-size:clamp(32px,4vw,48px)">Naikey Reyes Jr.</h2>
+      <p style="font-size:17px;color:var(--muted2);font-weight:300;line-height:1.8;margin-bottom:20px">Sono laureando in Giurisprudenza a Milano e ho lavorato in uno studio legale. In quello studio ho capito una cosa semplice: la reputazione online degli avvocati italiani è quasi sempre gestita male — non per mancanza di qualità, ma per mancanza di tempo e strumenti giusti.</p>
+      <p style="font-size:17px;color:var(--muted2);font-weight:300;line-height:1.8;margin-bottom:20px">Ho costruito LexReview partendo da quella esperienza. Non è un servizio di marketing generico adattato al settore legale — è un sistema pensato dall'inizio solo per gli avvocati italiani, con una comprensione diretta della deontologia forense e di cosa un potenziale cliente valuta prima di chiamare uno studio.</p>
+      <p style="font-size:17px;color:var(--muted2);font-weight:300;line-height:1.8">Lavoro solo con studi legali. Non perché non potrei fare altro, ma perché la specializzazione è l'unica cosa che mi permette di fare questo lavoro bene.</p>
+      <div style="margin-top:40px;display:flex;align-items:center;gap:20px;padding-top:32px;border-top:1px solid var(--border)">
+        <div>
+          <div style="font-size:15px;color:var(--text);font-weight:600">Naikey Reyes Jr.</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:3px">Fondatore LexReview · Laureando in Giurisprudenza · Milano</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HOW -->
+<section class="how" id="come">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="lbl">Come funziona</div>
+      <h2 class="ttl">Operativo in 7 giorni.<br><em>Sempre al lavoro.</em></h2>
+      <p class="sub">Il sistema gira da solo. L'unico impegno mensile dell'avvocato: 15 minuti per aggiungere i contatti dei clienti nel foglio condiviso. Tutto il resto — monitoraggio, risposte, raccolta recensioni, report — è automatizzato.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <div class="how-l"><div class="how-n">01</div><div class="how-w">Giorni 1-7</div></div>
+        <div class="how-line"></div>
+        <div class="how-r">
+          <h3>Audit e ottimizzazione completa del profilo Google</h3>
+          <p>Ottimizziamo il profilo Google nella Sua interezza: categoria, descrizione, foto, orari, Q&amp;A. In sette giorni il profilo lavora per lo studio, anche di notte, anche in ferie.</p>
+          <div class="auto-tag">Setup una tantum — poi automatico</div>
+        </div>
+      </div>
+      <div class="how-step reveal">
+        <div class="how-l"><div class="how-n">02</div><div class="how-w">Continuo</div></div>
+        <div class="how-line"></div>
+        <div class="how-r">
+          <h3>Sistema raccolta recensioni post-mandato</h3>
+          <p>L'email di raccolta parte dal Suo indirizzo, il cliente risponde a Lei, non a un servizio sconosciuto. Le esperienze negative arrivano solo a noi, prima di finire su Google. Tasso di conversione medio: 8-12%.</p>
+          <div class="auto-tag">Automatizzato — 0 intervento</div>
+        </div>
+      </div>
+      <div class="how-step reveal">
+        <div class="how-l"><div class="how-n">03</div><div class="how-w">Entro 24h</div></div>
+        <div class="how-line"></div>
+        <div class="how-r">
+          <h3>Risposta professionale a ogni recensione</h3>
+          <p>Ogni recensione riceve risposta entro 24 ore, tono formale, riservatezza rispettata, nessun dettaglio del mandato menzionato. Alert immediato per i casi critici.</p>
+          <div class="auto-tag">Alert automatico — risposta garantita</div>
+        </div>
+      </div>
+      <div class="how-step reveal">
+        <div class="how-l"><div class="how-n">04</div><div class="how-w">Ogni mese</div></div>
+        <div class="how-line"></div>
+        <div class="how-r">
+          <h3>Monitoraggio continuo e report KPI</h3>
+          <p>Rating, nuove recensioni, confronto mese su mese, in una dashboard aggiornata in tempo reale. Monitoriamo anche forum legali e directory: se il Suo nome appare in un contesto negativo, lo sappiamo prima di Lei.</p>
+          <div class="auto-tag">Dashboard live · report automatico</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- VALORE -->
+<section style="background:var(--bg2);border-top:1px solid var(--border);padding:88px 40px;position:relative;z-index:1">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="lbl">Cosa include ogni mese</div>
+      <h2 class="ttl">Non è un software.<br><em>È un servizio.</em></h2>
+      <p class="sub">Dietro LexReview c'è un team che lavora per il Suo studio ogni settimana. Ecco cosa succede, senza che Lei tocchi nulla.</p>
+    </div>
+
+    <style>
+      .vt { width:100%; border-collapse:collapse; table-layout:fixed; margin-top:56px; border:1px solid var(--border); }
+      .vt th, .vt td { border:1px solid var(--border); padding:0; margin:0; vertical-align:middle; }
+      .vt thead th { background:var(--surface); padding:13px 20px; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+      .vt thead th.c1 { width:auto; }
+      .vt thead th.c2 { width:80px; text-align:center; }
+      .vt thead th.c3 { width:80px; text-align:center; }
+      .vt tbody tr:nth-child(odd) td { background:var(--bg2); }
+      .vt tbody tr:nth-child(even) td { background:var(--bg); }
+      .vt td.c1 { padding:18px 24px; }
+      .vt td.c2, .vt td.c3 { text-align:center; padding:0; vertical-align:middle; height:80px; }
+      .vt tfoot td { background:rgba(212,175,55,.05) !important; border-top:1px solid rgba(212,175,55,.25); overflow:visible; }
+      .vt tfoot td.c1 { padding:18px 24px; }
+      .vt tfoot td.c2, .vt tfoot td.c3 { text-align:center; padding:0; vertical-align:middle; height:auto; min-height:80px; }
+      .vn { font-family:'DM Sans',sans-serif; font-size:22px; font-weight:800; color:var(--blue2); line-height:1; display:block; margin:0 auto; }
+      .vs { font-size:10px; color:var(--muted); margin-top:3px; display:block; }
+      .vt-t { font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px; }
+      .vt-d { font-size:12px; color:var(--muted2); font-weight:300; line-height:1.5; }
+      @media(max-width:600px){
+        .vt thead th.c2, .vt thead th.c3 { width:60px; }
+        .vt td.c1 { padding:14px 14px; }
+        .vt td.c2, .vt td.c3 { padding:14px 6px; }
+        .vn { font-size:17px; }
+        .vt-t { font-size:13px; }
+      }
+    </style>
+
+    <table class="vt reveal">
+      <thead>
+        <tr>
+          <th class="c1">Attività incluse ogni settimana</th>
+          <th class="c2">Sett.</th>
+          <th class="c3">Mese</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="c1"><div class="vt-t">Monitoraggio profilo Google e aggiornamenti</div><div class="vt-d">Il team controlla e aggiorna il profilo: post, foto, orari, Q&amp;A. Sempre curato, sempre attivo.</div></td>
+          <td class="c2"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">6h</span><span class="vs">sett.</span></div></td>
+          <td class="c3"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">24h</span><span class="vs">al mese</span></div></td>
+        </tr>
+        <tr>
+          <td class="c1"><div class="vt-t">Risposta a ogni recensione entro 24h</div><div class="vt-d">Ogni risposta scritta su misura da un professionista. Tono formale, riservatezza rispettata.</div></td>
+          <td class="c2"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">3h</span><span class="vs">sett.</span></div></td>
+          <td class="c3"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">12h</span><span class="vs">al mese</span></div></td>
+        </tr>
+        <tr>
+          <td class="c1"><div class="vt-t">Gestione crisi e recensioni negative</div><div class="vt-d">Alert immediato, risposta strategica, segnalazione a Google se falsa. Nessun danno lasciato senza risposta.</div></td>
+          <td class="c2"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">2h</span><span class="vs">sett.</span></div></td>
+          <td class="c3"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">8h</span><span class="vs">al mese</span></div></td>
+        </tr>
+        <tr>
+          <td class="c1"><div class="vt-t">Raccolta recensioni post-mandato</div><div class="vt-d">Il team gestisce la sequenza email, il filtro e il follow-up per ogni cliente con mandato concluso.</div></td>
+          <td class="c2"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">2h</span><span class="vs">sett.</span></div></td>
+          <td class="c3"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">8h</span><span class="vs">al mese</span></div></td>
+        </tr>
+        <tr>
+          <td class="c1"><div class="vt-t">Monitoraggio menzioni web 24/7</div><div class="vt-d">Il sistema non si ferma mai — forum, directory, siti specializzati. Sappiamo prima di Lei se qualcosa cambia.</div></td>
+          <td class="c2"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">24/7</span><span class="vs">continuo</span></div></td>
+          <td class="c3"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">720h</span><span class="vs">al mese</span></div></td>
+        </tr>
+        <tr>
+          <td class="c1"><div class="vt-t">Aggiornamenti e report settimanali</div><div class="vt-d">Il team La aggiorna ogni settimana sui risultati, le variazioni e le azioni in corso.</div></td>
+          <td class="c2"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">30min</span><span class="vs">sett.</span></div></td>
+          <td class="c3"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">2h</span><span class="vs">al mese</span></div></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="c1"><span style="font-size:14px;font-weight:700;color:var(--text)">Totale attività mensili dedicate al Suo studio</span></td>
+          <td class="c2"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">37h+</span><span class="vs">sett.</span></div></td>
+          <td class="c3"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:80px"><span class="vn">24/7</span><span class="vs">attivo</span></div></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div style="margin-top:14px;text-align:center;font-size:12px;color:var(--muted)" class="reveal">Il monitoraggio gira 24 ore su 24, 7 giorni su 7. Risposte, aggiornamenti e strategia vengono curati dal nostro team ogni settimana.</div>
+  </div>
+</section>
+
+
+<!-- RISULTATI -->
+<section class="results" id="risultati">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="lbl">Cosa cambia in 90 giorni</div>
+      <h2 class="ttl">Il problema è misurabile.<br><em>La soluzione anche.</em></h2>
+      <p class="sub">Questi sono i risultati che ottiene un sistema di gestione della reputazione attivo. I dati si basano sul funzionamento del servizio — verificabili dalla prima settimana sulla Sua dashboard.</p>
+    </div>
+    <div class="res-grid">
+      <div class="res-card reveal d1">
+        <div class="res-badges"><span class="rb before">Settimana 1</span><span class="res-arr">→</span><span class="rb after">Operativo</span></div>
+        <div class="res-big">GBP<span> attivo</span></div>
+        <p class="res-text">Profilo Google ottimizzato completamente: categoria, descrizione, foto, Q&A, orari. Il profilo inizia a lavorare per lo studio dal primo giorno, anche di notte, anche nei weekend.</p>
+        <div class="res-studio">Risultato garantito · Ogni studio · Entro 7 giorni</div>
+      </div>
+      <div class="res-card reveal d2">
+        <div class="res-badges"><span class="rb before">Da mese 1</span><span class="res-arr">→</span><span class="rb after">Continuo</span></div>
+        <div class="res-big">24h<span> risposta</span></div>
+        <p class="res-text">Ogni recensione riceve risposta entro 24 ore. Tono formale, riservatezza rispettata, nessun dettaglio del mandato. Le recensioni negative vengono gestite prima che danneggino il rating.</p>
+        <div class="res-studio">Risposta garantita · Ogni recensione · Ogni giorno</div>
+      </div>
+      <div class="res-card reveal d3">
+        <div class="res-badges"><span class="rb before">8-12%</span><span class="res-arr">→</span><span class="rb after">Tasso medio</span></div>
+        <div class="res-big">+rec<span>/mese</span></div>
+        <p class="res-text">Il sistema di raccolta post-mandato converte mediamente 8-12% dei clienti contattati in recensioni pubbliche. L'email parte dall'indirizzo dell'avvocato — il cliente risponde al suo avvocato, non a un servizio esterno.</p>
+        <div class="res-studio">Raccolta automatica · Deontologia rispettata</div>
+      </div>
+      <div class="res-card reveal d1">
+        <div class="res-badges"><span class="rb before">Alert</span><span class="res-arr">→</span><span class="rb after">Immediato</span></div>
+        <div class="res-big">0<span> crisi</span></div>
+        <p class="res-text">Monitoraggio 24/7 su GBP, directory legali e forum specializzati. Se il rating scende o appare una menzione critica, l'avvocato lo sa entro ore — non settimane.</p>
+        <div class="res-studio">Monitoraggio continuo · Ogni evento critico</div>
+      </div>
+      <div class="res-card reveal d2">
+        <div class="res-badges"><span class="rb before">Giorno 1</span><span class="res-arr">→</span><span class="rb after">In tempo reale</span></div>
+        <div class="res-big">KPI<span> live</span></div>
+        <p class="res-text">Dashboard Looker Studio condivisa e aggiornata in tempo reale. Rating, nuove recensioni, visualizzazioni profilo, trend mensile. L'avvocato vede i numeri quando vuole, senza chiedere a noi.</p>
+        <div class="res-studio">Dashboard personale · Accesso illimitato</div>
+      </div>
+      <div class="res-card reveal d3">
+        <div class="res-badges"><span class="rb before">Ogni mese</span><span class="res-arr">→</span><span class="rb after">Strategia</span></div>
+        <div class="res-big">30<span>min call</span></div>
+        <p class="res-text">Call mensile di 30 minuti inclusa: risultati del mese, obiettivi del mese successivo, eventuali azioni straordinarie. L'avvocato non gestisce nulla — supervisiona i risultati.</p>
+        <div class="res-studio">Call mensile inclusa · Agenda strutturata</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- VALORE CLIENTE -->
+<section style="background:var(--bg);border-top:1px solid var(--border);padding:88px 40px;position:relative;z-index:1">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;max-width:680px;margin:0 auto">
+      <div class="lbl" style="justify-content:center">Il calcolo che cambia tutto</div>
+      <h2 class="ttl" style="text-align:center">Quanto vale<br><em>un Suo cliente?</em></h2>
+      <p class="sub" style="text-align:center;margin:0 auto">Prima di guardare il prezzo, faccia questo conto.</p>
+    </div>
+
+    <div style="margin-top:56px;border:1px solid rgba(212,175,55,.2);background:rgba(212,175,55,.04);padding:52px 40px;text-align:center" class="reveal">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Valore medio di una singola consulenza legale</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:96px;font-weight:800;color:var(--text);line-height:1;letter-spacing:-.04em">300<span style="font-size:36px;color:var(--blue2)"> €</span></div>
+      <div style="font-size:14px;color:var(--muted2);font-weight:300;margin-top:12px">Un solo appuntamento. Un solo cliente. Un mese di LexReview già coperto.</div>
+    </div>
+
+    <div style="margin-top:1px;background:rgba(212,175,55,.03);border:1px solid rgba(212,175,55,.15);border-top:none;padding:32px 40px" class="reveal">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;justify-content:center;text-align:center">
+        <div>
+          <div style="font-size:15px;color:var(--muted2);font-weight:300;line-height:1.65;max-width:560px">
+            Una sola consulenza da 300 €, portata da un cliente trovato su Google, <strong style="color:var(--text)">copre un intero mese di LexReview.</strong> Una causa da 1.500 € netti lo copre per 5 mesi. Chi guadagna di più lo vede subito: è un'offerta irrinunciabile.
+          </div>
+        </div>
+        <div style="text-align:center;flex-shrink:0;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);padding:24px 32px;margin:0 auto">
+          <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue3);font-weight:600">Con una consulenza da 300 €</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:56px;font-weight:800;color:var(--blue2);line-height:1;letter-spacing:-.03em">1<span style="font-size:22px;color:var(--muted)"> mese</span></div>
+          <div style="font-size:12px;color:var(--muted2);margin-top:6px">di LexReview coperto</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+<!-- PRICING -->
+<section class="pricing" id="prezzo">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center">
+      <div class="lbl" style="justify-content:center">Il prezzo</div>
+      <h2 class="ttl" style="text-align:center">Un servizio. Un prezzo.<br><em>Tutto incluso.</em></h2>
+      <p class="sub" style="text-align:center;margin:0 auto">Nessuna scelta da fare, nessun add-on nascosto. Tutto quello che serve per gestire la reputazione dello studio, in un unico pacchetto.</p>
+    </div>
+    <!-- OFFERTA FONDATORI -->
+    <div style="max-width:680px;margin:0 auto 16px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.2);padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px" class="reveal">
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue3);margin-bottom:6px">◈ Offerta Fondatori — 2 posti rimasti</div>
+        <div style="font-size:15px;color:var(--text);font-weight:500">Primi 60 giorni gratuiti · Poi €299/mese · Disdetta libera</div>
+        <div style="font-size:13px;color:var(--muted2);margin-top:4px;font-weight:300">In cambio usiamo i risultati come caso studio anonimo. Nessun altro impegno.</div>
+      </div>
+      <a href="./audit_tool.html" style="background:var(--blue);color:#080808;padding:12px 24px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;letter-spacing:.03em;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Candidati ora →</a>
+    </div>
+
+    <div class="price-wrap reveal">
+      <div class="price-card">
+        <div class="price-name">Pacchetto completo</div>
+        <div class="price-top">
+          <div>
+            <div class="price-amount"><span class="price-sym">€</span><span class="price-num">299</span></div>
+            <div class="price-mo">/mese + IVA · Nessun contratto annuale</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">Disdetta libera in qualsiasi momento</div>
+          </div>
+          <div class="price-setup">Offerta Fondatori: primi 60 giorni gratuiti<br><small style="color:var(--muted);font-size:11px">2 posti rimasti — poi €299/mese</small></div>
+        </div>
+        <div class="price-feats">
+          <div class="pf"><span class="fc"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/></svg></span>Ottimizzazione completa profilo GBP</div>
+          <div class="pf"><span class="fc"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/></svg></span>Sistema raccolta recensioni post-mandato</div>
+          <div class="pf"><span class="fc"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/></svg></span>Risposta a tutte le recensioni entro 24h</div>
+          <div class="pf"><span class="fc"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/></svg></span>Alert automatici rating e nuove recensioni</div>
+          <div class="pf"><span class="fc"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/></svg></span>Monitoraggio menzioni web e directory</div>
+          <div class="pf"><span class="fc"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/></svg></span>4 Google Post al mese</div>
+          <div class="pf"><span class="fc"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/></svg></span>Dashboard KPI in tempo reale</div>
+          <div class="pf"><span class="fc"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/></svg></span>Call strategica mensile 30 minuti</div>
+        </div>
+        <div class="price-btn-wrap">
+          <a href="./audit_tool.html" class="price-btn">Analizzi il Suo studio — è gratuito →</a>
+          <p class="price-note">Nessun contratto · Disdetta libera · Zero sorprese</p>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:24px;padding-top:24px;border-top:1px solid var(--border)">
+          <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted2)">⚖️ Deontologia rispettata</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted2)">🔒 GDPR conforme</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted2)">📋 Senza contratto annuale</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted2)">🇮🇹 Servizio italiano</span>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="roi-box reveal">
+      <div class="roi-lbl">Il calcolo che fanno i nostri clienti</div>
+      <p class="roi-text">Una singola consulenza da <strong>300 €</strong> copre già un mese di servizio. Una causa da <strong>1.500 €</strong> netti lo copre per 5 mesi. Chi guadagna di più vede subito i numeri: <span class="g">ogni nuovo cliente trovato su Google vale anni di LexReview.</span></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- FAQ -->
+<section class="faq-sec" id="faq">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="lbl">Domande frequenti</div>
+      <h2 class="ttl">Ha ancora <em>dubbi?</em></h2>
+    </div>
+    <div class="faqs reveal">
+      <div class="fq">
+        <button class="fq-btn"><span class="fq-q">Il Codice Deontologico non vieta la pubblicità agli avvocati?</span><span class="fq-ico">+</span></button>
+        <div class="fq-ans"><p>Il Codice vieta la pubblicità comparativa, non la raccolta di recensioni reali né la gestione del profilo Google. Ogni nostra attività è conforme. Gliene mandiamo prova prima di qualsiasi impegno.</p></div>
+      </div>
+      <div class="fq">
+        <button class="fq-btn"><span class="fq-q">I miei clienti non vorranno lasciare recensioni per questioni di privacy.</span><span class="fq-ico">+</span></button>
+        <div class="fq-ans"><p>Il sistema chiede solo una valutazione generale, mai dettagli del mandato. L'email parte dal Suo indirizzo. Chi non risponde non viene ricontattato. Le recensioni negative arrivano solo a noi prima di finire su Google.</p></div>
+      </div>
+      <div class="fq">
+        <button class="fq-btn"><span class="fq-q">Quanto tempo mi richiede ogni mese?</span><span class="fq-ico">+</span></button>
+        <div class="fq-ans"><p>15 minuti al mese: inserisce i contatti dei clienti con mandato concluso in un foglio condiviso. Fine. Il resto è tutto nostro, inclusa una call mensile di 30 minuti.</p></div>
+      </div>
+      <div class="fq">
+        <button class="fq-btn"><span class="fq-q">Come faccio a sapere se sta funzionando davvero?</span><span class="fq-ico">+</span></button>
+        <div class="fq-ans"><p>Ha accesso dal primo giorno a una dashboard in tempo reale: rating attuale, nuove recensioni, posizione su Google, andamento nel tempo. Report confronto mese su mese ogni 28 del mese. I numeri sono oggettivi e verificabili in qualsiasi momento. Se dopo 90 giorni non vede risultati misurabili, disdice senza penali e senza domande.</p></div>
+      </div>
+      <div class="fq">
+        <button class="fq-btn"><span class="fq-q">299 € al mese sono tanti per uno studio della mia dimensione?</span><span class="fq-ico">+</span></button>
+        <div class="fq-ans"><p>Una parcella civile media vale 800-2.000 € netti. Un solo cliente nuovo al mese copre il servizio per un anno intero. I nostri clienti registrano in media un ROI di 12-28x.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- CTA FINALE -->
+<section class="cta-fin" id="audit">
+  <div class="cta-glow"></div>
+  <div class="wrap">
+    <div class="reveal">
+      <div class="lbl" style="justify-content:center">Inizia ora</div>
+      <h2 class="ttl" style="text-align:center">Il Suo punteggio di reputazione<br>in <em>30 secondi.</em></h2>
+      <p class="sub" style="text-align:center;margin:0 auto 48px">Inserisca il nome del Suo studio. Il tool analizza il profilo Google, il rating, i competitor locali e produce un report con le azioni concrete. Gratuito, immediato, senza impegno.</p>
+      <div style="text-align:center;position:relative">
+        <a href="./audit_tool.html" class="btn-main" style="font-size:16px;padding:18px 48px">Verifichi se il Suo studio è selezionabile <span class="arr">→</span></a>
+        <p class="cta-small">Gratuito · Risultato in 30 secondi · Nessun impegno</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="foot-logo">Lex<span class="dot">.</span>Review</a>
+  <p>Reputazione digitale per studi legali italiani</p>
+  <p>© 2025 LexReview · Tutti i diritti riservati</p>
+</footer>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// FAQ accordion
+document.querySelectorAll('.fq-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.fq').forEach(f => f.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  });
+});
+
+
+let currentStep = 1;
+const totalSteps = 5;
+const selectedValues = {};
+
+function updateProgress() {
+  const pct = (currentStep / totalSteps) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('stepLabel').textContent = `Passo ${currentStep} di ${totalSteps}`;
+}
+
+function selectOption(el, group) {
+  document.querySelectorAll(`#${group}-options .option`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedValues[group] = el.querySelector('input').value;
+}
+
+function setStar(n) {
+  const stars = document.querySelectorAll('.star-btn');
+  stars.forEach((s, i) => {
+    s.classList.toggle('active', i < n);
+  });
+  selectedValues['rating'] = n;
+}
+
+function validateStep(n) {
+  let valid = true;
+  if (n === 1) {
+    ['nome','studio','citta'].forEach(id => {
+      const f = document.getElementById(`f-${id}`);
+      const v = document.getElementById(id).value.trim();
+      if (!v) { f.classList.add('has-error'); valid = false; }
+      else f.classList.remove('has-error');
+    });
+  }
+  if (n === 2) {
+    const f = document.getElementById('f-spec');
+    if (!selectedValues['spec']) { f.classList.add('has-error'); valid = false; }
+    else f.classList.remove('has-error');
+  }
+  if (n === 5) {
+    const f = document.getElementById('f-email');
+    const v = document.getElementById('email').value.trim();
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!v || !re.test(v)) { f.classList.add('has-error'); valid = false; }
+    else f.classList.remove('has-error');
+  }
+  return valid;
+}
+
+function nextStep(n) {
+  if (!validateStep(n)) return;
+  document.getElementById(`step${n}`).classList.remove('active');
+  currentStep = n + 1;
+  if (currentStep <= totalSteps) {
+    document.getElementById(`step${currentStep}`).classList.add('active');
+    if (n === 1) document.getElementById('introBlock').style.display = 'none';
+  }
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function prevStep(n) {
+  document.getElementById(`step${n}`).classList.remove('active');
+  currentStep = n - 1;
+  document.getElementById(`step${currentStep}`).classList.add('active');
+  if (currentStep === 1) document.getElementById('introBlock').style.display = 'block';
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+async function submitForm() {
+  if (!validateStep(5)) return;
+
+  const data = {
+    nome: document.getElementById('nome').value,
+    studio: document.getElementById('studio').value,
+    citta: document.getElementById('citta').value,
+    specializzazione: selectedValues['spec'] || 'Non specificata',
+    url_google: document.getElementById('url').value || 'Non fornito',
+    recensioni: selectedValues['rec'] || 'Non specificato',
+    rating: selectedValues['rating'] ? selectedValues['rating'] + ' stelle' : 'Non specificato',
+    risposta_recensioni: selectedValues['risp'] || 'Non specificato',
+    recensioni_negative: selectedValues['neg'] || 'Non specificato',
+    note: document.getElementById('note').value || 'Nessuna nota',
+    email: document.getElementById('email').value,
+    telefono: document.getElementById('telefono').value || 'Non fornito',
+    _subject: 'Nuovo audit richiesto — ' + document.getElementById('studio').value + ' (' + document.getElementById('citta').value + ')',
+  };
+
+  const btn = document.querySelector('#step5 .btn-next');
+  btn.textContent = 'Invio in corso...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://formspree.io/f/xvzwwwga', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (res.ok) {
+      document.getElementById('step5').classList.remove('active');
+      document.getElementById('stepSuccess').classList.add('active');
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('stepLabel').textContent = 'Completato ✓';
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    } else {
+      btn.textContent = 'Riprova';
+      btn.disabled = false;
+      alert("Errore nell'invio. Riprovi o ci contatti direttamente.");
+    }
+  } catch(e) {
+    btn.textContent = 'Riprova';
+    btn.disabled = false;
+    alert('Errore di connessione. Verifichi la connessione internet e riprovi.');
+  }
+}
+</script>
+</body>
+</html>
